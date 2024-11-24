@@ -31,7 +31,7 @@ namespace Transport_Time.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
-        [HttpPost("AssignRuteToTruck")]
+        [HttpPost("AssignRouteToTruck")]
         public async Task<IActionResult> AssignRuteToTruck(InsertBusRute insertBusRute)
         {
             var response = await _transportRepository.AssignRuteToTruckAsync(insertBusRute);
@@ -43,6 +43,14 @@ namespace Transport_Time.Controllers
         public async Task<IActionResult> GetAssignedRoutes()
         {
             var response = await _transportRepository.GetAssignedRoutesAsync();
+
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [HttpGet("GetDetailRouteByRouteId")]
+        public async Task<IActionResult> GetDetailRouteByRouteId(string routeId)
+        {
+            var response = await _transportRepository.GetDetailRouteByRouteId(routeId);
 
             return StatusCode(response.StatusCode, response);
         }
