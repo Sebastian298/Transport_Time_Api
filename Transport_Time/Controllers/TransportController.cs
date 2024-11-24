@@ -54,5 +54,13 @@ namespace Transport_Time.Controllers
 
             return StatusCode(response.StatusCode, response);
         }
+
+        [HttpDelete("RemoveTruckFromRoute")]
+        public async Task<IActionResult> RemoveTruckFromRoute(string busId, string routeId)
+        {
+            var response = await _transportRepository.RemoveTruckFromRouteAsync(busId, routeId);
+
+            return StatusCode(response.StatusCode, response);
+        }
     }
 }
