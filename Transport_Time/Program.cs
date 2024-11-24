@@ -1,4 +1,5 @@
 using Transport_Time.Data;
+using Transport_Time.Repositories;
 using Transport_Time.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection")!;
 builder.Services.AddSingleton(provider => new DapperContext(connectionString!));
 builder.Services.AddScoped<IDapperService,DapperService>();
+builder.Services.AddScoped<ITransportRepository, TransportRepository>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
