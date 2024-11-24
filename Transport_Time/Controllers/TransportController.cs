@@ -38,5 +38,13 @@ namespace Transport_Time.Controllers
 
             return StatusCode(response.StatusCode, response);
         }
+
+        [HttpGet("GetAssignedRoutes")]
+        public async Task<IActionResult> GetAssignedRoutes()
+        {
+            var response = await _transportRepository.GetAssignedRoutesAsync();
+
+            return StatusCode(response.StatusCode, response);
+        }
     }
 }
