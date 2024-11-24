@@ -10,5 +10,6 @@ namespace Transport_Time.Repositories
         Task<GenericResponse<IEnumerable<ModelToDropdown>>> GetAssignedRoutesAsync();
         Task<GenericResponse<DetailInfoRoute>> GetDetailRouteByRouteId(string routeId);
         Task<GenericResponse<CrudResponse>> RemoveTruckFromRouteAsync(string busId,string routeId);
+        Task<GenericResponse<RoutingInfo>> GetInfoForCurrentRouteAsync(string originCoordinates);
     }
 }

@@ -7,10 +7,12 @@ namespace Transport_Time.Repositories
     public class TransportRepository : ITransportRepository
     {
         private readonly IDapperService _dapperService;
+        private readonly RoutingService _routingService;
 
-        public TransportRepository(IDapperService dapperService)
+        public TransportRepository(IDapperService dapperService,RoutingService routingService)
         {
             _dapperService = dapperService;
+            _routingService = routingService;
         }
 
         public async Task<GenericResponse<CrudResponse>> AssignRuteToTruckAsync(InsertBusRute insertBusRute)
@@ -88,6 +90,45 @@ namespace Transport_Time.Repositories
             catch (Exception ex)
             {
                 return new GenericResponse<DetailInfoRoute>
+                {
+                    StatusCode = 500,
+                    InnerException = ex.Message
+                };
+            }
+        }
+
+        public async Task<GenericResponse<RoutingInfo>> GetInfoForCurrentRouteAsync(string originCoordinates)
+        {
+            try
+            {
+                var routingServiceResponse = await _routingService.CalculateRouteAsync(originCoordinates);
+                if (routingServiceResponse.Success)
+                {
+                    var data = routingServiceResponse.Content;
+                    var objRoutes = data!.Routes;
+                    var objRoute = objRoutes[0];
+                    return new GenericResponse<RoutingInfo>
+                    {
+                        StatusCode = 200,
+                        Content = new RoutingInfo
+                        {
+                            Summary = objRoute.Summary,
+                            Points = objRoute.Legs[0].Points
+                        }
+                    };
+                }
+                else
+                {
+                    return new GenericResponse<RoutingInfo>
+                    {
+                        StatusCode = 500,
+                        InnerException = routingServiceResponse.ErrorMessage
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new GenericResponse<RoutingInfo>
                 {
                     StatusCode = 500,
                     InnerException = ex.Message
