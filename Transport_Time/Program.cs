@@ -9,6 +9,7 @@ string connectionString = builder.Configuration.GetConnectionString("DefaultConn
 builder.Services.AddSingleton(provider => new DapperContext(connectionString!));
 builder.Services.AddHttpClient<HttpService>();
 builder.Services.AddScoped<IDapperService,DapperService>();
+builder.Services.AddScoped<RoutingService>();
 builder.Services.AddScoped<ITransportRepository, TransportRepository>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
