@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Transport_Time.Models;
 using Transport_Time.Repositories;
 
 namespace Transport_Time.Controllers
@@ -26,6 +27,14 @@ namespace Transport_Time.Controllers
         public async Task<IActionResult> GetUnnasignedRoutes()
         {
             var response = await _transportRepository.GetUnnasignedRoutes();
+
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [HttpPost("AssignRuteToTruck")]
+        public async Task<IActionResult> AssignRuteToTruck(InsertBusRute insertBusRute)
+        {
+            var response = await _transportRepository.AssignRuteToTruckAsync(insertBusRute);
 
             return StatusCode(response.StatusCode, response);
         }
