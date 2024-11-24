@@ -62,5 +62,13 @@ namespace Transport_Time.Controllers
 
             return StatusCode(response.StatusCode, response);
         }
+
+        [HttpGet("GetInfoForCurrentRoute")]
+        public async Task<IActionResult> GetInfoForCurrentRoute(string originCoordinates)
+        {
+            var response = await _transportRepository.GetInfoForCurrentRouteAsync(originCoordinates);
+
+            return StatusCode(response.StatusCode, response);
+        }
     }
 }
