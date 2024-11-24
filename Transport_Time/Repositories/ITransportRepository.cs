@@ -6,5 +6,6 @@ namespace Transport_Time.Repositories
     {
         Task<GenericResponse<IEnumerable<ModelToDropdown>>> GetUnnasignedTrucks();
         Task<GenericResponse<IEnumerable<ModelToDropdown>>> GetUnnasignedRoutes();
+        Task<GenericResponse<CrudResponse>> AssignRuteToTruckAsync(InsertBusRute insertBusRute);
     }
 }
