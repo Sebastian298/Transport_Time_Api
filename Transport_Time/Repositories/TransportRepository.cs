@@ -151,6 +151,32 @@ namespace Transport_Time.Repositories
             }
         }
 
-
+        public async Task<GenericResponse<CrudResponse>> RemoveTruckFromRouteAsync(string busId, string routeId)
+        {
+            try
+            {
+                var storedProcedureName = "RemoveBusFromRoute";
+                DynamicParameters dynamicParameters = new DynamicParameters();
+                dynamicParameters.Add("@BusId", busId);
+                dynamicParameters.Add("@RouteId", routeId);
+                var dapperResponse = await _dapperService.ExecuteStoredProcedureAsync<CrudResponse>(
+                    storedProcedureName, dynamicParameters
+                );
+                return new GenericResponse<CrudResponse>
+                {
+                    StatusCode = dapperResponse.HasError ? 500 : 200,
+                    Content = dapperResponse.HasError ? null : dapperResponse.Results,
+                    InnerException = dapperResponse.HasError ? dapperResponse.InnerException : null
+                };
+            }
+            catch (Exception ex)
+            {
+                return new GenericResponse<CrudResponse>
+                {
+                    StatusCode = 500,
+                    InnerException = ex.Message
+                };
+            }
+        }
     }
 }
