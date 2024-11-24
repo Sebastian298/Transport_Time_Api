@@ -42,6 +42,32 @@ namespace Transport_Time.Repositories
             }
         }
 
+        public async Task<GenericResponse<IEnumerable<ModelToDropdown>>> GetAssignedRoutesAsync()
+        {
+            try
+            {
+                var storedProcedureName = "Routs_GetAssignedRouts";
+                var dapperResponse = await _dapperService.ExecuteStoredProcedureAsync<ModelToDropdown>(
+                    storedProcedureName,
+                    hasArray: true
+                );
+                return new GenericResponse<IEnumerable<ModelToDropdown>>
+                {
+                    StatusCode = dapperResponse.HasError ? 500 : 200,
+                    Content = dapperResponse.HasError ? null : dapperResponse.Results,
+                    InnerException = dapperResponse.HasError ? dapperResponse.InnerException : null
+                };
+            }
+            catch (Exception ex)
+            {
+                return new GenericResponse<IEnumerable<ModelToDropdown>>
+                {
+                    StatusCode = 500,
+                    InnerException = ex.Message
+                };
+            }
+        }
+
         public async Task<GenericResponse<IEnumerable<ModelToDropdown>>> GetUnnasignedRoutes()
         {
             try
