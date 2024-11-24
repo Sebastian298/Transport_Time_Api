@@ -68,6 +68,33 @@ namespace Transport_Time.Repositories
             }
         }
 
+        public async Task<GenericResponse<DetailInfoRoute>> GetDetailRouteByRouteId(string routeId)
+        {
+            try
+            {
+                var storedProcedureName = "BussesRoutes_GetRoutAndAssginedTruck";
+                DynamicParameters dynamicParameters = new DynamicParameters();
+                dynamicParameters.Add("@RouteId", routeId);
+                var dapperResponse = await _dapperService.ExecuteStoredProcedureAsync<DetailInfoRoute>(
+                    storedProcedureName, dynamicParameters
+                );
+                return new GenericResponse<DetailInfoRoute>
+                {
+                    StatusCode = dapperResponse.HasError ? 500 : 200,
+                    Content = dapperResponse.HasError ? null : dapperResponse.Results,
+                    InnerException = dapperResponse.HasError ? dapperResponse.InnerException : null
+                };
+            }
+            catch (Exception ex)
+            {
+                return new GenericResponse<DetailInfoRoute>
+                {
+                    StatusCode = 500,
+                    InnerException = ex.Message
+                };
+            }
+        }
+
         public async Task<GenericResponse<IEnumerable<ModelToDropdown>>> GetUnnasignedRoutes()
         {
             try
