@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection")!;
 builder.Services.AddSingleton(provider => new DapperContext(connectionString!));
+builder.Services.AddHttpClient<HttpService>();
 builder.Services.AddScoped<IDapperService,DapperService>();
 builder.Services.AddScoped<ITransportRepository, TransportRepository>();
 builder.Services.AddControllers();
