@@ -5,9 +5,9 @@ namespace Transport_Time.Repositories
 {
     public class TransportRepository : ITransportRepository
     {
-        private readonly DapperService _dapperService;
+        private readonly IDapperService _dapperService;
 
-        public TransportRepository(DapperService dapperService)
+        public TransportRepository(IDapperService dapperService)
         {
             _dapperService = dapperService;
         }
