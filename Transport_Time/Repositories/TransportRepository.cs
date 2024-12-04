@@ -44,6 +44,35 @@ namespace Transport_Time.Repositories
             }
         }
 
+        public async Task<GenericResponse<CrudResponse>> CreateUserAsync(InsertUser insertUser)
+        {
+            try
+            {
+                var storedProcedureName = "Users_CreateUser";
+                DynamicParameters dynamicParameters = new DynamicParameters();
+                dynamicParameters.Add("@Matricula", insertUser.Matricula);
+                dynamicParameters.Add("@Password", insertUser.Password);
+
+                var dapperResponse = await _dapperService.ExecuteStoredProcedureAsync<CrudResponse>(
+                    storedProcedureName, dynamicParameters
+                );
+                return new GenericResponse<CrudResponse>
+                {
+                    StatusCode = dapperResponse.HasError ? 500 : 200,
+                    Content = dapperResponse.HasError ? null : dapperResponse.Results,
+                    InnerException = dapperResponse.HasError ? dapperResponse.InnerException : null
+                };
+            }
+            catch (Exception ex)
+            {
+                return new GenericResponse<CrudResponse>
+                {
+                    StatusCode = 500,
+                    InnerException = ex.Message
+                };
+            }
+        }
+
         public async Task<GenericResponse<IEnumerable<ModelToDropdown>>> GetAssignedRoutesAsync()
         {
             try
@@ -129,6 +158,62 @@ namespace Transport_Time.Repositories
             catch (Exception ex)
             {
                 return new GenericResponse<RoutingInfo>
+                {
+                    StatusCode = 500,
+                    InnerException = ex.Message
+                };
+            }
+        }
+
+        public async Task<GenericResponse<LogInUser>> GetLogInUsersAsync(InsertUser insertUser)
+        {
+            try
+            {
+                var storedProcedureName = "Users_ValidateLogIn";
+                DynamicParameters dynamicParameters = new DynamicParameters();
+                dynamicParameters.Add("@Matricula", insertUser.Matricula);
+                dynamicParameters.Add("@Password", insertUser.Password);
+
+                var dapperResponse = await _dapperService.ExecuteStoredProcedureAsync<LogInUser>(
+                    storedProcedureName, dynamicParameters
+                );
+
+                return new GenericResponse<LogInUser>
+                {
+                    StatusCode = dapperResponse.HasError ? 500 : 200,
+                    Content = dapperResponse.HasError ? null : dapperResponse.Results,
+                    InnerException = dapperResponse.HasError ? dapperResponse.InnerException : null
+                };
+            }
+            catch (Exception ex)
+            {
+                return new GenericResponse<LogInUser>
+                {
+                    StatusCode = 500,
+                    InnerException = ex.Message
+                };
+            }
+        }
+
+        public async Task<GenericResponse<IEnumerable<RoutesWithCoordinate>>> GetRoutesWithCoordinates()
+        {
+            try
+            {
+                var storedProcedureName = "Routes_GetRoutesWithCoordinates";
+                var dapperResponse = await _dapperService.ExecuteStoredProcedureAsync<RoutesWithCoordinate>(
+                    storedProcedureName,
+                    hasArray: true
+                );
+                return new GenericResponse<IEnumerable<RoutesWithCoordinate>>
+                {
+                    StatusCode = dapperResponse.HasError ? 500 : 200,
+                    Content = dapperResponse.HasError ? null : dapperResponse.Results,
+                    InnerException = dapperResponse.HasError ? dapperResponse.InnerException : null
+                };
+            }
+            catch (Exception ex)
+            {
+                return new GenericResponse<IEnumerable<RoutesWithCoordinate>>
                 {
                     StatusCode = 500,
                     InnerException = ex.Message

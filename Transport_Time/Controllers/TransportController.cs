@@ -70,5 +70,29 @@ namespace Transport_Time.Controllers
 
             return StatusCode(response.StatusCode, response);
         }
+
+        [HttpPost("CreateUser")]
+        public async Task<IActionResult> CreateUser(InsertUser insertUser)
+        {
+            var response = await _transportRepository.CreateUserAsync(insertUser);
+
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [HttpPost("GetLogInUsers")]
+        public async Task<IActionResult> GetLogInUsers(InsertUser insertUser)
+        {
+            var response = await _transportRepository.GetLogInUsersAsync(insertUser);
+
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [HttpGet("GetRoutesWithCoordinates")]
+        public async Task<IActionResult> GetRoutesWithCoordinates()
+        {
+            var response = await _transportRepository.GetRoutesWithCoordinates();
+
+            return StatusCode(response.StatusCode, response);
+        }
     }
 }
